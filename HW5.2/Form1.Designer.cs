@@ -228,7 +228,6 @@
             this.tBox_MoneyAmount.Size = new System.Drawing.Size(222, 34);
             this.tBox_MoneyAmount.TabIndex = 7;
             this.tBox_MoneyAmount.Text = "0";
-            this.tBox_MoneyAmount.TextChanged += new System.EventHandler(this.tBox_MoneyAmount_TextChanged);
             // 
             // lbl_MoneyState
             // 
@@ -297,6 +296,7 @@
             this.product6.Quantity = 52;
             this.product6.Size = new System.Drawing.Size(142, 172);
             this.product6.TabIndex = 0;
+            this.product6.ItemQuantityChanged += new HW5._2.ItemQuantityChangedEventHandler(this.product_ItemQuantityChanged);
             // 
             // product5
             // 
@@ -312,6 +312,7 @@
             this.product5.Quantity = 40;
             this.product5.Size = new System.Drawing.Size(142, 172);
             this.product5.TabIndex = 0;
+            this.product5.ItemQuantityChanged += new HW5._2.ItemQuantityChangedEventHandler(this.product_ItemQuantityChanged);
             // 
             // product4
             // 
@@ -327,6 +328,7 @@
             this.product4.Quantity = 21;
             this.product4.Size = new System.Drawing.Size(142, 172);
             this.product4.TabIndex = 0;
+            this.product4.ItemQuantityChanged += new HW5._2.ItemQuantityChangedEventHandler(this.product_ItemQuantityChanged);
             // 
             // product3
             // 
@@ -342,6 +344,7 @@
             this.product3.Quantity = 14;
             this.product3.Size = new System.Drawing.Size(142, 172);
             this.product3.TabIndex = 0;
+            this.product3.ItemQuantityChanged += new HW5._2.ItemQuantityChangedEventHandler(this.product_ItemQuantityChanged);
             // 
             // product2
             // 
@@ -357,6 +360,7 @@
             this.product2.Quantity = 32;
             this.product2.Size = new System.Drawing.Size(142, 172);
             this.product2.TabIndex = 0;
+            this.product2.ItemQuantityChanged += new HW5._2.ItemQuantityChangedEventHandler(this.product_ItemQuantityChanged);
             // 
             // product1
             // 
@@ -372,6 +376,7 @@
             this.product1.Quantity = 20;
             this.product1.Size = new System.Drawing.Size(142, 172);
             this.product1.TabIndex = 0;
+            this.product1.ItemQuantityChanged += new HW5._2.ItemQuantityChangedEventHandler(this.product_ItemQuantityChanged);
             // 
             // panel2
             // 

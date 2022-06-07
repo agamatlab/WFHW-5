@@ -73,10 +73,11 @@ namespace HW5._2
 
         private void num_BuyQuantity_ValueChanged(object sender, EventArgs e)
         {
+            
             if (oldValue == num_BuyQuantity.Value) 
                 return;
 
-            
+
             var parts = cBox_Count.Text.Split(' ');
             if (num_BuyQuantity.Value > oldValue)
             {
@@ -88,18 +89,21 @@ namespace HW5._2
             else
                 parts[0] = (Convert.ToInt32(parts[0]) + 1).ToString();
 
+            ItemQuantityChangedEventArgs itemQuantityChanged = new(num_BuyQuantity.Value < oldValue);
+            
             oldValue = num_BuyQuantity.Value;
             cBox_Count.Text = String.Join(' ' ,parts);
 
+            OnItemQuantityChanged(itemQuantityChanged);
         }
 
-        private void lbl_Price_TextChanged(object sender, EventArgs e)
+        public event ItemQuantityChangedEventHandler ItemQuantityChanged;
+
+        protected virtual void OnItemQuantityChanged(ItemQuantityChangedEventArgs e)
         {
-
+            if (ItemQuantityChanged != null)
+                ItemQuantityChanged(this, e);
         }
 
-        private void cBox_Count_TextChanged(object sender, EventArgs e)
-        {
-        }
     }
 }

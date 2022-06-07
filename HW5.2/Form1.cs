@@ -1,3 +1,4 @@
+﻿using Newtonsoft.Json;
 using System.Text.Json;
 
 namespace HW5._2
@@ -17,14 +18,14 @@ namespace HW5._2
                 if (control is Product product)
                     items.Add(product.GetItem());
 
-            var jsonString = JsonSerializer.Serialize(items);
+            var jsonString = JsonConvert.SerializeObject(items);
             File.WriteAllText("products.json", jsonString);
         }
 
         void LoadProgressFromFile()
         {
-            var text = File.ReadAllText("products.json");
-            List<Item> items = JsonSerializer.Deserialize<List<Item>>(text) 
+            var stringData = File.ReadAllText("products.json");
+            List<Item> items = JsonConvert.DeserializeObject<List<Item>>(stringData)
                 ?? new List<Item>();
             
             if (items.Count == 0) return;
@@ -42,50 +43,87 @@ namespace HW5._2
         private void tgl_MoneySwitch_CheckedChanged(object sender, EventArgs e)
             => lbl_MoneyState.Text = tgl_MoneySwitch.Checked ? "ADD" : "REMOVE";
 
-        private void tBox_MoneyAmount_TextChanged(object sender, EventArgs e)
-        {
-            lbl_MoneyLeft.Text = tBox_MoneyAmount.Text;
-        }
+
 
         private void ChangeMoneyAmount(object sender, EventArgs e)
         {
             if(sender is Guna.UI2.WinForms.Guna2CircleButton btn)
             {
                 var value = Convert.ToDecimal(btn.Tag);
-
+                decimal currentValue = Convert.ToDecimal(tBox_MoneyAmount.Text);
+                decimal leftMoney = Convert.ToDecimal(lbl_MoneyLeft.Text
+                    .Substring(0, lbl_MoneyLeft.Text.Length - 1));
 
                 if (tgl_MoneySwitch.Checked)
+                {
                     tBox_MoneyAmount.Text = 
-                        (Convert.ToDecimal(tBox_MoneyAmount.Text) + value).ToString();
+                        (currentValue + value).ToString();
+                    lbl_MoneyLeft.Text = (leftMoney + value).ToString() + '₼';
+
+                }
                 else
                 {
                     decimal calculatedValue = 
-                        (Convert.ToDecimal(tBox_MoneyAmount.Text) - value);
+                        currentValue - value;
 
-                    if(calculatedValue < 0)
-                        calculatedValue = 0;
+                    decimal calculatedLeftMoney =
+                        leftMoney - value;
+
+                    if (calculatedValue < 0 || value < 0 || calculatedLeftMoney < 0)
+                    {
+                        MessageBox.Show("Insufficent Amount...");
+                        return;
+                    }
                     tBox_MoneyAmount.Text = calculatedValue.ToString();
+                    lbl_MoneyLeft.Text = calculatedLeftMoney.ToString() + '₼';
                 }
+
+
 
             }
         }
 
-        private void product_ValueChanged(object sender, EventArgs e)
-        {
-            decimal amount = default;
-            foreach (var item in pnl_Products.Controls)
-                if(item is Product product)
-                    if(product.cBox_Count.Checked)
-                        amount += product.BuyQuantity * (decimal)product.Price;
-
-            lbl_MoneyLeft.Text = (Convert.ToDecimal(lbl_MoneyLeft.Text) + amount).ToString();
-        }
 
         private void lbl_Exit_Click(object sender, EventArgs e)
         {
             //SaveProgressToFile();
             Environment.Exit(0);
 
+        }
+
+        private bool _breakEvent = false;
+        private void product_ItemQuantityChanged(object sender, ItemQuantityChangedEventArgs e)
+        {
+            if(_breakEvent)
+            {
+                _breakEvent = false;
+                return;
+            }
+
+            Product? product = sender as Product;
+            if (product != null)
+            {
+                decimal currentLeftMoney =
+                    Convert.ToDecimal(lbl_MoneyLeft.Text.Substring(0, lbl_MoneyLeft.Text.Length - 1))
+                    + (decimal)product.Price * (e.Increment ? 1 : -1);
+
+                if(currentLeftMoney < 0)
+                {
+                    MessageBox.Show("Insufficent Balance"); 
+                    _breakEvent = true;
+                    product.BuyQuantity--;
+                    return;
+                }
+
+                lbl_MoneyLeft.Text = currentLeftMoney.ToString() + '₼';
+            }
+            //decimal amount = default;
+            //foreach (var item in pnl_Products.Controls)
+            //    if(item is Product product)
+            //        if(product.cBox_Count.Checked)
+            //            amount += product.BuyQuantity * (decimal)product.Price;
+
+            //lbl_MoneyLeft.Text = (Convert.ToDecimal(lbl_MoneyLeft.Text) + amount).ToString();
         }
     }
 }

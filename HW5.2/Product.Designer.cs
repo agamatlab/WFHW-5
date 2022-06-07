@@ -60,7 +60,6 @@
             this.lbl_Price.Size = new System.Drawing.Size(39, 20);
             this.lbl_Price.TabIndex = 2;
             this.lbl_Price.Text = "0.0₼";
-            this.lbl_Price.TextChanged += new System.EventHandler(this.lbl_Price_TextChanged);
             // 
             // num_BuyQuantity
             // 
@@ -98,7 +97,6 @@
             this.cBox_Count.UncheckedState.BorderThickness = 0;
             this.cBox_Count.UncheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
             this.cBox_Count.CheckedChanged += new System.EventHandler(this.cBox_Count_CheckedChanged);
-            this.cBox_Count.TextChanged += new System.EventHandler(this.cBox_Count_TextChanged);
             // 
             // Product
             // 
